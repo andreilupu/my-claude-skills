@@ -1,7 +1,7 @@
 ---
 name: diagnose-request
-description: Diagnose slow HTTP requests by breaking down timing (DNS, TLS, TTFB, transfer) and identifying bottlenecks
-argument-hint: <URL> [Bearer <token>] [Body: <json>]
+description: "Diagnose slow HTTP requests by breaking down timing (DNS, TLS, TTFB, transfer) and identifying bottlenecks"
+argument-hint: "<URL> [Bearer <token>] [Body: <json>]"
 ---
 
 # Diagnose HTTP Request Performance
