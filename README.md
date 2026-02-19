@@ -24,6 +24,8 @@ Clone this repo and manually copy skills as needed.
 | Skill | Description |
 |-------|-------------|
 | [diagnose-request](skills/diagnose-request.md) | Diagnose slow HTTP requests by breaking down timing (DNS, TLS, TTFB, transfer) and identifying bottlenecks |
+| [commit](skills/commit.md) | Prepare and create commits with proper analysis, linting, and clear commit messages |
+| [prepare-pr](skills/prepare-pr.md) | Prepare and create pull requests using the project's PR template from `.github/` |
 
 ## Usage
 
