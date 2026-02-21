@@ -11,6 +11,7 @@ A collection of custom skills for [Claude Code](https://claude.ai/claude-code).
 ln -s /path/to/my-claude-skills/skills/diagnose-request ~/.claude/skills/diagnose-request
 ln -s /path/to/my-claude-skills/skills/commit ~/.claude/skills/commit
 ln -s /path/to/my-claude-skills/skills/prepare-pr ~/.claude/skills/prepare-pr
+ln -s /path/to/my-claude-skills/skills/wordpress-plugins-repo-worktrees ~/.claude/skills/wordpress-plugins-repo-worktrees
 ```
 
 ### Option 2: Copy to project
@@ -28,6 +29,7 @@ Clone this repo and manually copy skills as needed.
 | [diagnose-request](skills/diagnose-request/SKILL.md) | Diagnose slow HTTP requests by breaking down timing (DNS, TLS, TTFB, transfer) and identifying bottlenecks |
 | [commit](skills/commit/SKILL.md) | Prepare and create commits with proper analysis, linting, and clear commit messages |
 | [prepare-pr](skills/prepare-pr/SKILL.md) | Prepare and create pull requests using the project's PR template from `.github/` |
+| [wordpress-plugins-repo-worktrees](skills/wordpress-plugins-repo-worktrees/SKILL.md) | Manage git worktrees in a WordPress plugins monorepo (when `wp-content/plugins` is the git repo) with wp-config.php integration |
 
 ## Usage
 
@@ -46,7 +48,9 @@ skills/
 │   └── SKILL.md
 ├── commit/
 │   └── SKILL.md
-└── prepare-pr/
+├── prepare-pr/
+│   └── SKILL.md
+└── wordpress-plugins-repo-worktrees/
     └── SKILL.md
 ```
 
