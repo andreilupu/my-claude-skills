@@ -1,7 +1,6 @@
 ---
 name: commit
-description: "Prepare and create commits with proper analysis and linting"
-argument-hint: "[optional commit message]"
+description: "Use when preparing and creating a git commit — analyzes staged changes, runs linters, and composes a clear commit message"
 ---
 
 # Commit Preparation

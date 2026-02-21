@@ -1,6 +1,6 @@
 ---
 name: prepare-pr
-description: "Prepare and create pull requests using the project's PR template"
+description: "Use when preparing a pull request — finds the project's PR template, analyzes branch changes, runs linters, and generates PR content"
 ---
 
 # Prepare Pull Request

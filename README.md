@@ -1,19 +1,21 @@
 # My Claude Skills
 
-A collection of custom skills (slash commands) for [Claude Code](https://claude.ai/claude-code).
+A collection of custom skills for [Claude Code](https://claude.ai/claude-code).
 
 ## Installation
 
-### Option 1: Symlink to global commands (recommended)
+### Option 1: Symlink to global skills (recommended)
 
 ```bash
-# Link individual skills to your global commands
-ln -s /path/to/my-claude-skills/skills/diagnose-request.md ~/.claude/commands/diagnose-request.md
+# Link individual skills to your global skills directory
+ln -s /path/to/my-claude-skills/skills/diagnose-request ~/.claude/skills/diagnose-request
+ln -s /path/to/my-claude-skills/skills/commit ~/.claude/skills/commit
+ln -s /path/to/my-claude-skills/skills/prepare-pr ~/.claude/skills/prepare-pr
 ```
 
 ### Option 2: Copy to project
 
-Copy any skill file to your project's `.claude/commands/` directory.
+Copy any skill folder to your project's `.claude/skills/` directory.
 
 ### Option 3: Use as a reference
 
@@ -23,27 +25,35 @@ Clone this repo and manually copy skills as needed.
 
 | Skill | Description |
 |-------|-------------|
-| [diagnose-request](skills/diagnose-request.md) | Diagnose slow HTTP requests by breaking down timing (DNS, TLS, TTFB, transfer) and identifying bottlenecks |
-| [commit](skills/commit.md) | Prepare and create commits with proper analysis, linting, and clear commit messages |
-| [prepare-pr](skills/prepare-pr.md) | Prepare and create pull requests using the project's PR template from `.github/` |
+| [diagnose-request](skills/diagnose-request/SKILL.md) | Diagnose slow HTTP requests by breaking down timing (DNS, TLS, TTFB, transfer) and identifying bottlenecks |
+| [commit](skills/commit/SKILL.md) | Prepare and create commits with proper analysis, linting, and clear commit messages |
+| [prepare-pr](skills/prepare-pr/SKILL.md) | Prepare and create pull requests using the project's PR template from `.github/` |
 
 ## Usage
 
-Once installed, invoke skills with `/skill-name`:
+Skills are automatically loaded by Claude Code when relevant, or can be invoked explicitly:
 
-```
-/diagnose-request https://example.com/api/health
-```
+- Via slash command: `/diagnose-request https://example.com/api/health`
+- Via the Skill tool in agent contexts
 
 ## Skill Format
 
-Skills are markdown files with YAML frontmatter:
+Skills use a folder-based structure with a `SKILL.md` file and YAML frontmatter:
+
+```
+skills/
+├── diagnose-request/
+│   └── SKILL.md
+├── commit/
+│   └── SKILL.md
+└── prepare-pr/
+    └── SKILL.md
+```
 
 ```markdown
 ---
 name: skill-name
-description: Brief description shown in autocomplete
-argument-hint: <required> [optional]
+description: "Use when [triggering conditions]"
 ---
 
 # Skill Title

@@ -4,27 +4,29 @@
 
 ### 1. File Structure
 
-Create a new `.md` file in the `skills/` directory:
+Create a new folder in `skills/` with a `SKILL.md` file:
 
 ```
 skills/
-├── diagnose-request.md
-├── your-new-skill.md
+├── diagnose-request/
+│   └── SKILL.md
+├── your-new-skill/
+│   └── SKILL.md
 └── ...
 ```
 
 ### 2. Frontmatter
 
-Every skill needs YAML frontmatter:
+Every skill needs YAML frontmatter with `name` and `description`:
 
 ```yaml
 ---
-name: skill-name              # Used for /skill-name invocation
-description: Brief desc       # Shown in autocomplete
-argument-hint: <url> [opts]   # Shows usage hint
-disable-model-invocation: false  # Optional, default false
+name: skill-name
+description: "Use when [triggering conditions for this skill]"
 ---
 ```
+
+The `description` should start with "Use when" and describe the conditions that trigger the skill, not a summary of the workflow.
 
 ### 3. Body Structure
 
@@ -59,14 +61,14 @@ Describe how to format and present output...
 ### Testing
 
 Test your skill by:
-1. Copying to `~/.claude/commands/`
-2. Running `/your-skill` in Claude Code
+1. Symlinking the skill folder to `~/.claude/skills/`
+2. Invoking `/your-skill` in Claude Code or letting it auto-trigger
 3. Verifying it handles edge cases
 
 ## Submitting
 
 1. Fork this repository
 2. Create a branch: `git checkout -b add/skill-name`
-3. Add your skill to `skills/`
+3. Add your skill folder to `skills/`
 4. Update `README.md` with the skill in the table
 5. Submit a pull request
