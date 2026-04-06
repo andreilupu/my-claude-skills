@@ -12,6 +12,7 @@ ln -s /path/to/my-claude-skills/skills/diagnose-request ~/.claude/skills/diagnos
 ln -s /path/to/my-claude-skills/skills/commit ~/.claude/skills/commit
 ln -s /path/to/my-claude-skills/skills/prepare-pr ~/.claude/skills/prepare-pr
 ln -s /path/to/my-claude-skills/skills/wordpress-plugins-repo-worktrees ~/.claude/skills/wordpress-plugins-repo-worktrees
+ln -s /path/to/my-claude-skills/skills/html-to-wp-fse ~/.claude/skills/html-to-wp-fse
 ```
 
 ### Option 2: Copy to project
@@ -30,6 +31,7 @@ Clone this repo and manually copy skills as needed.
 | [commit](skills/commit/SKILL.md) | Prepare and create commits with proper analysis, linting, and clear commit messages |
 | [prepare-pr](skills/prepare-pr/SKILL.md) | Prepare and create pull requests using the project's PR template from `.github/` |
 | [wordpress-plugins-repo-worktrees](skills/wordpress-plugins-repo-worktrees/SKILL.md) | Manage git worktrees in a WordPress plugins monorepo (when `wp-content/plugins` is the git repo) with wp-config.php integration |
+| [html-to-wp-fse](skills/html-to-wp-fse/SKILL.md) | Convert HTML design exports (Stitch, Figma, etc.) into WordPress Full Site Editing block themes — handles block markup conversion, theme.json generation, and editor validation |
 
 ## Usage
 
@@ -50,8 +52,13 @@ skills/
 │   └── SKILL.md
 ├── prepare-pr/
 │   └── SKILL.md
-└── wordpress-plugins-repo-worktrees/
-    └── SKILL.md
+├── wordpress-plugins-repo-worktrees/
+│   └── SKILL.md
+└── html-to-wp-fse/
+    ├── SKILL.md
+    ├── block-rules.md
+    ├── theme-scaffolding.md
+    └── patterns/
 ```
 
 ```markdown
