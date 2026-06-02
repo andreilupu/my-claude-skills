@@ -19,8 +19,8 @@ usage() {
 Usage:
   wp-api.sh whoami
   wp-api.sh GET <endpoint> [--query "k=v&k2=v2"]
-  wp-api.sh POST <endpoint> '<json>' | @file.json
-  wp-api.sh PUT  <endpoint> '<json>' | @file.json
+  wp-api.sh POST <endpoint> '<json>'|@file.json
+  wp-api.sh PUT  <endpoint> '<json>'|@file.json
   wp-api.sh DELETE <endpoint> [--force]
   wp-api.sh --dry-run <METHOD> <endpoint> ['<json>']
 EOF

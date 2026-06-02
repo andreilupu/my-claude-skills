@@ -60,8 +60,8 @@ credential.
 ```
 bash wp-api.sh whoami
 bash wp-api.sh GET <endpoint> [--query "k=v&k2=v2"]
-bash wp-api.sh POST <endpoint> '<json>' | @file.json
-bash wp-api.sh PUT  <endpoint> '<json>'
+bash wp-api.sh POST <endpoint> '<json>'|@file.json
+bash wp-api.sh PUT  <endpoint> '<json>'|@file.json
 bash wp-api.sh DELETE <endpoint> [--force]
 bash wp-api.sh --dry-run <METHOD> <endpoint> ['<json>']
 ```

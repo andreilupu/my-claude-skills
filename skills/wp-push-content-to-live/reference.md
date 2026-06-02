@@ -29,6 +29,8 @@ bash wp-api.sh DELETE posts/42 --force                  # permanent
 bash wp-api.sh --dry-run POST posts '{"title":"Hi"}'    # preview, sends nothing
 ```
 
+Override the credential file location with `WP_ENV_FILE=/path/to/.env`.
+
 ## Common `wp/v2` endpoints
 
 | Resource | Endpoint | Notes |
