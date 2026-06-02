@@ -76,10 +76,11 @@ fi
 
 # --- Load credentials (this process only) ---
 [ -f "$ENV_FILE" ] || die "env file not found at $ENV_FILE (set WP_ENV_FILE or create .env)"
-set -a
+# Source credentials as plain shell vars — NOT exported. curl receives them as
+# arguments, so child processes never need them in their environment.
 # shellcheck disable=SC1090
 source "$ENV_FILE"
-set +a
+set +x   # re-assert: a stray `set -x` inside .env must not leave tracing enabled
 
 for key in WP_SITE_URL WP_USERNAME WP_APP_PASSWORD; do
   [ -n "${!key:-}" ] || die "$key not set in $ENV_FILE"

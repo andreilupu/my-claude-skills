@@ -8,6 +8,7 @@ set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WRAPPER="$HERE/../wp-api.sh"
 FAKE_PW="SECRET-TOKEN-DO-NOT-LEAK-12345"
+SAVED_PATH="$PATH"
 
 PASS=0
 fail() { echo "FAIL: $1"; exit 1; }
@@ -25,7 +26,7 @@ printf '%s\n' "\$@" >> "$SHIM_LOG"
 printf '%s\n%s' '{"id":1,"status":"draft"}' '200'
 EOF
   chmod +x "$WORK/curl"
-  PATH="$WORK:$PATH"
+  PATH="$WORK:$SAVED_PATH"
   ENVF="$WORK/.env"
   cat > "$ENVF" <<EOF
 WP_SITE_URL=https://example.com
@@ -34,7 +35,7 @@ WP_APP_PASSWORD=$FAKE_PW
 EOF
 }
 
-teardown() { rm -rf "$WORK"; }
+teardown() { rm -rf "$WORK"; PATH="$SAVED_PATH"; }
 
 # 1: missing env file → nonzero exit, clear message
 setup
@@ -80,7 +81,7 @@ teardown
 
 # 5: whoami → GET users/me
 setup
-WP_ENV_FILE="$ENVF" bash "$WRAPPER" whoami >/dev/null 2>&1
+WP_ENV_FILE="$ENVF" bash "$WRAPPER" whoami >/dev/null 2>&1 || fail "whoami failed unexpectedly"
 grep -qF "wp-json/wp/v2/users/me" "$SHIM_LOG" || fail "whoami should hit users/me"
 grep -qxF "GET" "$SHIM_LOG" || fail "whoami should use GET"
 ok "whoami → GET users/me"
@@ -88,19 +89,42 @@ teardown
 
 # 6: --query appended to URL
 setup
-WP_ENV_FILE="$ENVF" bash "$WRAPPER" GET posts --query "per_page=5" >/dev/null 2>&1
+WP_ENV_FILE="$ENVF" bash "$WRAPPER" GET posts --query "per_page=5" >/dev/null 2>&1 || fail "GET with query failed unexpectedly"
 grep -qF "wp-json/wp/v2/posts?per_page=5" "$SHIM_LOG" || fail "query not appended"
 ok "--query appended to URL"
 teardown
 
 # 7: DELETE trashes by default; --force adds force=true
 setup
-WP_ENV_FILE="$ENVF" bash "$WRAPPER" DELETE posts/3 >/dev/null 2>&1
+WP_ENV_FILE="$ENVF" bash "$WRAPPER" DELETE posts/3 >/dev/null 2>&1 || fail "DELETE failed unexpectedly"
 if grep -qF "force=true" "$SHIM_LOG"; then fail "default DELETE must not force"; fi
 : > "$SHIM_LOG"
-WP_ENV_FILE="$ENVF" bash "$WRAPPER" DELETE posts/3 --force >/dev/null 2>&1
+WP_ENV_FILE="$ENVF" bash "$WRAPPER" DELETE posts/3 --force >/dev/null 2>&1 || fail "DELETE --force failed unexpectedly"
 grep -qF "force=true" "$SHIM_LOG" || fail "--force should add force=true"
 ok "DELETE force semantics"
+teardown
+
+# 8: HTTP error response → message on stderr, nonzero exit
+setup
+cat > "$WORK/curl" <<EOF
+#!/usr/bin/env bash
+printf '%s\n' "\$@" >> "$SHIM_LOG"
+printf '%s\n%s' '{"code":"rest_forbidden","message":"Sorry"}' '403'
+EOF
+chmod +x "$WORK/curl"
+out="$(WP_ENV_FILE="$ENVF" bash "$WRAPPER" GET posts 2>&1)"; rc=$?
+[ "$rc" -ne 0 ] || fail "HTTP 403 should exit nonzero"
+echo "$out" | grep -qF "HTTP 403" || fail "should report HTTP 403"
+ok "HTTP error exits nonzero with message"
+teardown
+
+# 9: PUT with @file payload → method and --data reach curl
+setup
+echo '{"status":"publish"}' > "$WORK/body.json"
+WP_ENV_FILE="$ENVF" bash "$WRAPPER" PUT posts/7 "@$WORK/body.json" >/dev/null 2>&1 || fail "PUT failed unexpectedly"
+grep -qxF "PUT" "$SHIM_LOG" || fail "PUT method not passed to curl"
+grep -qF "@$WORK/body.json" "$SHIM_LOG" || fail "@file payload not passed to curl"
+ok "PUT with @file payload"
 teardown
 
 echo ""
