@@ -12,3 +12,7 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.bak
+
+# Local process artifacts — kept locally, not committed
+docs/superpowers/
+.claude/
