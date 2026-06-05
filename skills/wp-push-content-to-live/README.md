@@ -21,9 +21,19 @@ appears in the conversation, logs, or command output.
 
 ## Setup
 
+Assisted — the password is written to `.env`, never shown to Claude:
+
+```bash
+bash wp-connect.sh url https://your-site.com   # open the printed URL, approve
+bash wp-connect.sh listen                       # saves .env from the redirect
+bash wp-api.sh whoami                            # verify auth
+```
+
+Or manual:
+
 ```bash
 cp .env.example .env
-# edit .env: WP_SITE_URL, WP_USERNAME (slug), WP_APP_PASSWORD (quoted)
+# edit .env: WP_SITE_URL, WP_USERNAME (login name), WP_APP_PASSWORD (quoted)
 bash wp-api.sh whoami   # verify auth
 ```
 

@@ -29,10 +29,10 @@ credential.
    ```bash
    bash wp-api.sh whoami
    ```
-   If it errors with "env file not found", tell the user to copy `.env.example`
-   to `.env` and fill it in (Application Password from WP Admin → Users →
-   Profile → Application Passwords), then stop until they confirm. Do not read
-   `.env` afterward.
+   If it errors with "env file not found", set up credentials first — use the
+   **Connecting** flow below (preferred), or have the user create an Application
+   Password manually and fill in `.env`. Then stop until they confirm. Do not
+   read `.env` afterward.
 2. **Build the payload** ad-hoc from the conversation. See `reference.md` for
    endpoints and field names.
 3. **Draft-first (hard rule)** — posts and pages are created as
@@ -67,6 +67,33 @@ bash wp-api.sh --dry-run <METHOD> <endpoint> ['<json>']
 ```
 
 Override the credential file location with `WP_ENV_FILE=/path/to/.env`.
+
+## Connecting (first-time setup)
+
+Two ways to get credentials into `.env`. Either way **Claude never sees the
+password** — it is written to `.env` directly.
+
+**Assisted (preferred)** — uses the WordPress authorize flow:
+
+1. Ask the user for their site URL, then:
+   ```bash
+   bash wp-connect.sh url https://their-site.com
+   ```
+   This confirms the site supports Application Passwords and prints an authorize
+   URL. Relay that URL to the user; they open it (logged in) and approve.
+2. Then run the catcher, which saves `.env` from the redirect:
+   ```bash
+   bash wp-connect.sh listen
+   ```
+   It writes `WP_SITE_URL` / `WP_USERNAME` / `WP_APP_PASSWORD` and prints only a
+   non-secret confirmation. Add `--force` to overwrite an existing credential;
+   pass the same `--port` to both steps if you override the default (9789). The
+   password reaches `.env` via the browser→catcher redirect — never through
+   Claude.
+
+**Manual** — the user creates an Application Password (WP Admin → Users →
+Profile → Application Passwords), copies `.env.example` to `.env`, and fills it
+in.
 
 ## Out of scope
 

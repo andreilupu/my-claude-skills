@@ -13,8 +13,26 @@
 3. `.env` is git-ignored. Never commit it. Claude never reads it — only
    `wp-api.sh` sources it.
 
-`WP_USERNAME` must be the user **slug** (from `GET /wp-json/wp/v2/users`, the
-`slug` field), not the display name.
+`WP_USERNAME` must be the user's **login name** (`user_login`) — the value the
+authorize flow returns and that Basic Auth expects, not the display name. It
+usually matches the `slug` from `GET /wp-json/wp/v2/users`, but the login name
+is authoritative.
+
+## Get credentials with `wp-connect.sh` (assisted)
+
+Instead of creating the password by hand, use the WordPress authorize flow — the
+password is written straight to `.env`, never shown to Claude:
+
+```bash
+bash wp-connect.sh url https://your-site.com   # prints an authorize URL to open + approve
+bash wp-connect.sh listen                       # catches the redirect, writes .env
+```
+
+- Run both steps with the same `--port` if you override the default (9789).
+- `--force` overwrites an existing credential in `.env`.
+- `--env-file PATH` (or `WP_ENV_FILE`) targets a different `.env` location.
+- Requires the site to be HTTPS with Application Passwords enabled; the `url`
+  step checks and reports if not.
 
 ## Wrapper usage
 
